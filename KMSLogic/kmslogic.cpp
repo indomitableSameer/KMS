@@ -3,4 +3,6 @@
 #include "DBAccessProvider.h"
 KMSLogic::KMSLogic()
 {
+
+
 }
