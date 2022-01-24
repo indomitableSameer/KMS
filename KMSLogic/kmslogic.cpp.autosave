@@ -1,0 +1,30 @@
+#include "kmslogic.h"
+#include "datareceiver.h"
+#include "DBAccessProvider.h"
+#include "UIDataResponse.h"
+
+int red_flag_value = 1500;
+int yellow_flag_value = 1000;
+int result_value;
+UIDataResponse result;  
+
+KMSLogic::KMSLogic()
+{
+
+
+}
+
+UIDataResponse KMSLogic::alarmPrediction()
+{
+    float ppmLevel = 0.0;
+    //ppmLevel = function_from_data_receiver;
+   if (ppmLevel > red_flag_value){
+       result.alarm_result = 2;
+   }if (ppmLevel > yellow_flag_value){
+       result.alarm_result = 1;
+   }else {
+       result.alarm_result = 0;
+   }
+   result.ppmLevel = ppmLevel;   
+   return result;
+}
