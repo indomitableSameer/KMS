@@ -4,6 +4,8 @@
 class CDBAccessProvider
 {
 public:
+    bool isDBOpen();
+    bool close();
     CDBAccessProvider();
 };
 
