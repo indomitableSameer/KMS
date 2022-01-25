@@ -1,4 +1,5 @@
 QT -= gui
+QT += multimedia
 
 TEMPLATE = lib
 CONFIG += staticlib
@@ -13,12 +14,16 @@ CONFIG += c++11
 SOURCES += \
     UIDataResponse.cpp \
     alarmlogic.cpp \
+    alarmpredictionlogic.cpp \
+    alarmsound.cpp \
     kmslogic.cpp
 
 HEADERS += \
     UIDataResponse.h \
     UIdata.h \
     alarmlogic.h \
+    alarmpredictionlogic.h \
+    alarmsound.h \
     kmslogic.h
 
 # Default rules for deployment.

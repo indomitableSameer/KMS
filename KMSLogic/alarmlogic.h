@@ -1,8 +1,6 @@
 #ifndef ALARMLOGIC_H
 #define ALARMLOGIC_H
 
-#include <string>
-
 using namespace std;
 
 class alarmlogic
@@ -10,7 +8,7 @@ class alarmlogic
 public:
     alarmlogic();
 
-    string alarmPrediction(float ppmLevel);
+    int alarmCommand();
 };
 
 #endif // ALARMLOGIC_H
