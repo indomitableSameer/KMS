@@ -14,19 +14,19 @@ CONFIG += console
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    UIDataResponse.cpp \
     alarmlogic.cpp \
     alarmpredictionlogic.cpp \
     alarmsound.cpp \
-    kmslogic.cpp
+    kmslogic.cpp \
+    kmsresponse.cpp
 
 HEADERS += \
-    UIDataResponse.h \
     UIdata.h \
     alarmlogic.h \
     alarmpredictionlogic.h \
     alarmsound.h \
-    kmslogic.h
+    kmslogic.h \
+    kmsresponse.h
 
 # Default rules for deployment.
 unix {

@@ -3,29 +3,25 @@
 #include <string>
 #include <QSound>
 
-int ppmLevel = 600;
-int red_flag_value = 1500;
-int yellow_flag_value = 1000;
-int result_value;
+double RED_FLAG_VALUE = 15000.00;
+double YELLOW_FLAG_VALUE = 10000.00;
+int alarm_command_value;
 
 using namespace std;
 
-alarmlogic::alarmlogic()
+AlarmLogic::AlarmLogic()
 {
 
 }
 
-int alarmlogic::alarmCommand()
+int AlarmLogic::alarmCommand(double ppmLevel)
 {
-    //write main functions here : business logic
-    return 0;
-}
-
-int main()
-{
-    QSound *playAudio = new QSound("C:/Users/anish/QTProjects/KMS/alarm_red.wav");
-    playAudio->setLoops(3);
-    playAudio->play();
-    playAudio->stop();
-    return 0;
+    if (ppmLevel > RED_FLAG_VALUE){
+        alarm_command_value = 2;
+    }if (ppmLevel > YELLOW_FLAG_VALUE){
+        alarm_command_value = 1;
+    }else {
+        alarm_command_value = 0;
+    }
+   return alarm_command_value;
 }
