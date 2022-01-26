@@ -1,4 +1,5 @@
 QT -= gui
+QT += sql
 
 TEMPLATE = lib
 CONFIG += staticlib
@@ -13,7 +14,10 @@ SOURCES += \
     DBAccessProvider.cpp
 
 HEADERS += \
-    DBAccessProvider.h
+    DBAccessProvider.h \
+    IDBReader.h \
+    IDBWriter.h \
+    ISqlTableList.h
 
 # Default rules for deployment.
 unix {
