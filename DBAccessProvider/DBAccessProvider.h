@@ -14,11 +14,16 @@ class CDBAccessProvider : public QObject, public IDBWriter, public IDBReader
     bool openDB();
     bool isDBOpen();
     void close();
+    bool runQuery(QString aQuery);
 public:
     CDBAccessProvider();
     virtual ~CDBAccessProvider() {}
-    bool WriteToDatabase(TABLE aTableName, ...);
-    void readTableRecords(TABLE aTable);
+    bool WriteSo2LevelToDB(int aSo2Value);
+    bool WriteAlarmDataToDB(int alarm);
+    bool WriteNotificationDataToDB(QString aNotificationMsg);
+    void readSo2ValueRecords();
+    void readAlarmDataRecords();
+    void readNotificationDataRecords();
 };
 
 #endif // CDBACCESSPROVIDER_H
