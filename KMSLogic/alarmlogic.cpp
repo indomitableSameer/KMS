@@ -23,6 +23,9 @@ int alarmlogic::alarmCommand()
 
 int main()
 {
-    //PlaySoundA("alarm_red.wav",NULL,SND_SYNC);
+    QSound *playAudio = new QSound("C:/Users/anish/QTProjects/KMS/alarm_red.wav");
+    playAudio->setLoops(3);
+    playAudio->play();
+    playAudio->stop();
     return 0;
 }

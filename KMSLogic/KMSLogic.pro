@@ -6,6 +6,7 @@ CONFIG += staticlib
 INCLUDEPATH += ../DataReceiver ../DBAccessProvider/
 LIBS += L../DataReceiver/debug -ldatareceiver -L../DBAccessProvider/debug -ldbAccessprovider
 CONFIG += c++11
+CONFIG += console
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -31,3 +32,6 @@ unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic
 }
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    alarm_red.wav
