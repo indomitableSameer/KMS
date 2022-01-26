@@ -17,15 +17,12 @@ alarmlogic::alarmlogic()
 
 int alarmlogic::alarmCommand()
 {
-    //write main functions here : business logic
-    return 0;
-}
-
-int main()
-{
-    QSound *playAudio = new QSound("C:/Users/anish/QTProjects/KMS/alarm_red.wav");
-    playAudio->setLoops(3);
-    playAudio->play();
-    playAudio->stop();
-    return 0;
+    if (ppmLevel > red_flag_value){
+        result_value = 2;
+    }if (ppmLevel > yellow_flag_value){
+        result_value = 1;
+    }else {
+        result_value = 0;
+    }
+   return result_value;
 }

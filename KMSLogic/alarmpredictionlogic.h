@@ -8,7 +8,7 @@ class AlarmPredictionLogic
 {
 public:
     AlarmPredictionLogic();
-    string alarmPrediction();
+    double alarmPrediction();
 };
 
 #endif // ALARMPREDICTIONLOGIC_H

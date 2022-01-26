@@ -12,14 +12,10 @@ AlarmPredictionLogic::AlarmPredictionLogic()
 
 }
 
-string AlarmPredictionLogic::alarmPrediction()
+double AlarmPredictionLogic::alarmPrediction()
 {
-    //write main functions here : business logic
-    return "Result";
-}
 
-int main()
-{
+    //mathematical calculation for probability
     if (ppmLevel > red_flag_value){
         cout << "80% Probability in Cyclone Blockage in next 3 days :Red Alarm !!";
         result_value = 2;
@@ -31,6 +27,4 @@ int main()
         result_value = 0;
     }
    return result_value;
-
-    return 0;
 }
