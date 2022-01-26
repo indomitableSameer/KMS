@@ -3,12 +3,12 @@
 
 using namespace std;
 
-class alarmlogic
+class AlarmLogic
 {
 public:
-    alarmlogic();
+    AlarmLogic();
 
-    int alarmCommand();
+    int alarmCommand(double ppmLevel);
 };
 
 #endif // ALARMLOGIC_H

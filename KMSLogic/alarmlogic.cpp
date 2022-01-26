@@ -3,26 +3,25 @@
 #include <string>
 #include <QSound>
 
-int ppmLevel = 600;
-int red_flag_value = 1500;
-int yellow_flag_value = 1000;
-int result_value;
+double RED_FLAG_VALUE = 15000.00;
+double YELLOW_FLAG_VALUE = 10000.00;
+int alarm_command_value;
 
 using namespace std;
 
-alarmlogic::alarmlogic()
+AlarmLogic::AlarmLogic()
 {
 
 }
 
-int alarmlogic::alarmCommand()
+int AlarmLogic::alarmCommand(double ppmLevel)
 {
-    if (ppmLevel > red_flag_value){
-        result_value = 2;
-    }if (ppmLevel > yellow_flag_value){
-        result_value = 1;
+    if (ppmLevel > RED_FLAG_VALUE){
+        alarm_command_value = 2;
+    }if (ppmLevel > YELLOW_FLAG_VALUE){
+        alarm_command_value = 1;
     }else {
-        result_value = 0;
+        alarm_command_value = 0;
     }
-   return result_value;
+   return alarm_command_value;
 }
