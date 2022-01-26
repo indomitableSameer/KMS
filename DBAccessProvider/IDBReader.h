@@ -6,7 +6,9 @@
 class IDBReader
 {
 public:
-    virtual void readTableRecords(TABLE aTable) = 0;
+    virtual void readSo2ValueRecords() = 0;
+    virtual void readAlarmDataRecords() = 0;
+    virtual void readNotificationDataRecords() = 0;
 };
 
 #endif // IDBREADER_H

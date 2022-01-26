@@ -13,61 +13,56 @@ CDBAccessProvider::CDBAccessProvider()
         db->setDatabaseName("E:\\QtLearning\\KMS_T\\kml.db");
 }
 
-bool CDBAccessProvider::openDB()
+bool CDBAccessProvider::WriteSo2LevelToDB(int aSo2Value)
 {
-    return db->open();
+    QString prepareQuery = "insert into so2_level (date, time, value) VALUES (strftime('%Y-%m-%d', 'now'), strftime('%H:%M:%S','now')," + QString::number(aSo2Value) +")";
+    return runQuery(prepareQuery);
 }
 
-bool CDBAccessProvider::isDBOpen()
+bool CDBAccessProvider::WriteAlarmDataToDB(int alarm)
 {
-    return db->isOpen();
+    QString prepareQuery = "insert into alarm_data (date, time, alarm) VALUES (strftime('%Y-%m-%d', 'now'), strftime('%H:%M:%S','now')," + QString::number(alarm) +")";
+    return runQuery(prepareQuery);
 }
 
-void CDBAccessProvider::close()
+bool CDBAccessProvider::WriteNotificationDataToDB(QString aNotificationMsg)
 {
-    return db->close();
+    QString prepareQuery = "insert into notification (date, time, msg) VALUES (strftime('%Y-%m-%d', 'now'), strftime('%H:%M:%S','now'), '" + aNotificationMsg +"')";
+    return runQuery(prepareQuery);
 }
 
-bool CDBAccessProvider::WriteToDatabase(TABLE aTableName, ...)
+void CDBAccessProvider::readSo2ValueRecords()
 {
-    va_list args;
-    va_start(args, aTableName);
 
-    if(aTableName == TABLE::SO2_LEVEL)
+}
+
+void CDBAccessProvider::readAlarmDataRecords()
+{
+
+}
+
+void CDBAccessProvider::readNotificationDataRecords()
+{
+
+}
+
+bool CDBAccessProvider::runQuery(QString aQuery)
+{
+    if(!db->open())
     {
-        QString so2Value;
-        QString prepareQuery = "insert into so2_level (date, time, value) VALUES (strftime('%Y-%m-%d', 'now'), strftime('%H:%M:%S','now')," + so2Value +")";
-        if(!db->open())
-        {
-            qInfo() << "ERROR : Opening database failed.";
-            return false;
-        }
-
-        QSqlQuery query(prepareQuery);
-        bool ret = query.exec();
-
-        if(!ret)
-        {
-            // Error while running query, log error
-            qInfo() << "ERROR :" << query.lastError();
-        }
-
-        db->close();
-        return ret;
+        qInfo() << "ERROR : Opening database failed.";
+        return false;
     }
 
-    if(aTableName == TABLE::ALARM_DATA)
-    {
+    QSqlQuery query(aQuery);
+    bool ret = query.exec();
 
+    if(!ret)
+    {
+        // Error while running query, log error
+        qInfo() << "ERROR :" << query.lastError();
     }
 
-    if(aTableName == TABLE::NOTIFICATION_DATA)
-    {
-
-    }
-}
-
-void CDBAccessProvider::readTableRecords(TABLE aTable)
-{
-
+    db->close();
+    return ret;
 }
