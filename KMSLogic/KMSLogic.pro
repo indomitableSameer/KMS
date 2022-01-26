@@ -1,5 +1,6 @@
 QT -= gui
 QT += multimedia
+QT += sql
 
 TEMPLATE = lib
 CONFIG += staticlib

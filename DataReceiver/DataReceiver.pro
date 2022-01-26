@@ -15,6 +15,8 @@ SOURCES += \
 HEADERS += \
     datareceiver.h
 
+target.path
+
 # Default rules for deployment.
 unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic
