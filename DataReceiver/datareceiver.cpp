@@ -2,6 +2,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QTimer>
+#include <QDebug>
 
 #define DATA_READ_INTERVAL    60000
 
@@ -13,15 +14,16 @@ bool DataReceiver::ValidateFileAccess()
 
 bool DataReceiver::GetRowFromCsv(int& aSO2Value)
 {
-    QFile aCsvfile(m_csvLocation);
-    if(!aCsvfile.open(QIODevice::ReadOnly | QIODevice::Text))
+    if(m_stream->atEnd())
     {
-        // file open failed.
-        return false;
+        qDebug() << "INFO: read full file, restarting from start again.";
+        delete m_stream;
+        m_file->close();
+        delete m_file;
+        start();
     }
 
-    QTextStream in(&aCsvfile);
-    QString line = in.readLine();
+    QString line = m_stream->readLine();
 
     // convert string to unsigned int
     bool ok;
@@ -29,6 +31,7 @@ bool DataReceiver::GetRowFromCsv(int& aSO2Value)
     if(!ok)
     {
         // conversion failure
+        qDebug() << "ERROR: toUInt() Failed.";
         return false;
     }
 
@@ -42,6 +45,7 @@ void DataReceiver::ReadDataPriodically()
     if(!GetRowFromCsv(so2))
     {
         // unable to get so2 value
+        qDebug() << "ERROR: Unable to get row from csv file.";
         return;
     }
 }
@@ -50,11 +54,27 @@ DataReceiver::DataReceiver(QString aCsvPath)
 {
     if(aCsvPath.isNull() || aCsvPath.isEmpty())
     {
+        qDebug() << "ERROR: Invalid Argument to DataReceiver constructor " << aCsvPath;
         throw std::_INVALID_ARGUMENT;
     }
 
     m_csvLocation = aCsvPath;
+}
+
+bool DataReceiver::start()
+{
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &DataReceiver::ReadDataPriodically);
     timer->start(DATA_READ_INTERVAL);
+
+    m_file = new QFile(m_csvLocation);
+    if(!m_file->open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        // file open failed.
+        qDebug() << "ERROR: Unable to open file " << m_csvLocation;
+        return false;
+    }
+
+    m_stream = new QTextStream(m_file);
+    return true;
 }
