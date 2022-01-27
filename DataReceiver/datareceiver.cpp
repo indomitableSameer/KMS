@@ -48,6 +48,7 @@ void DataReceiver::ReadDataPriodically()
         qDebug() << "ERROR: Unable to get row from csv file.";
         return;
     }
+    emit dataAvailable(so2);
 }
 
 DataReceiver::DataReceiver(QString aCsvPath)

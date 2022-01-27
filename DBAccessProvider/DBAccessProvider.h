@@ -21,9 +21,9 @@ public:
     bool WriteSo2LevelToDB(int aSo2Value);
     bool WriteAlarmDataToDB(int alarm);
     bool WriteNotificationDataToDB(QString aNotificationMsg);
-    void readSo2ValueRecords();
-    void readAlarmDataRecords();
-    void readNotificationDataRecords();
+    QList<so2_value_record> readSo2ValueRecords(QDate* aSinceDate=NULL, QTime* aSinceTime=NULL, QDate* aTillDate=NULL, QTime* aTillTime=NULL);
+    QList<alarm_record> readAlarmDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime);
+    QList<notification_record> readNotificationDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime);
 };
 
 #endif // CDBACCESSPROVIDER_H
