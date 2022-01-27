@@ -5,8 +5,9 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
+#include <IDataReceiver.h>
 
-class DataReceiver : public QObject
+class DataReceiver : public IDataReceiver
 {
     Q_OBJECT
     QString m_csvLocation;
