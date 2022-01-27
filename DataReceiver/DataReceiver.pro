@@ -13,6 +13,7 @@ SOURCES += \
     datareceiver.cpp
 
 HEADERS += \
+    IDataReceiver.h \
     datareceiver.h
 
 target.path
