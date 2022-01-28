@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QDebug>
+#include <stdexcept>
 
 #define DATA_READ_INTERVAL    60000
 
@@ -57,6 +58,7 @@ DataReceiver::DataReceiver(QString aCsvPath)
     {
         qDebug() << "ERROR: Invalid Argument to DataReceiver constructor " << aCsvPath;
         throw std::_INVALID_ARGUMENT;
+
     }
 
     m_csvLocation = aCsvPath;
