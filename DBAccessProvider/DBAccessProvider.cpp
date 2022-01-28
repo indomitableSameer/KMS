@@ -5,17 +5,22 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QDateTime>
+#include <QueryEngine.h>
 
-QString getCurrentDate()
+bool CDBAccessProvider::openDB()
 {
-    QDateTime local(QDateTime::currentDateTime());
-    return local.date().toString("dd.MM.yyyy");
+    if(!db->open())
+    {
+        qInfo() << "ERROR : Opening database failed.";
+        return false;
+    }
+
+    return true;
 }
 
-QString getCurrentTime()
+void CDBAccessProvider::closeDB()
 {
-    QDateTime local(QDateTime::currentDateTime());
-    return local.time().toString();
+    db->close();
 }
 
 CDBAccessProvider::CDBAccessProvider()
@@ -24,80 +29,95 @@ CDBAccessProvider::CDBAccessProvider()
         db = new QSqlDatabase(dbtmp);
         // TODO : need to set proper location
         db->setDatabaseName("E:\\QtLearning\\KMS_T\\kml.db");
+        queryEngine = new QueryEngine(db);
 }
 
 bool CDBAccessProvider::WriteSo2LevelToDB(int aSo2Value)
 {
-    QString prepareQuery = "insert into so2_level (date, time, value) VALUES ('" + getCurrentDate() + "','" + getCurrentTime() +"'," + QString::number(aSo2Value) +")";
-    return runQuery(prepareQuery);
+   bool aIsOpen = openDB();
+   if(aIsOpen)
+   {
+       bool isSuccessFull = queryEngine->runQuery(QueryEngine::getInsertQuery(TABLE::SO2_LEVEL, QString::number(aSo2Value)));
+       closeDB();
+       return isSuccessFull;
+   }
+   return false;
 }
 
 bool CDBAccessProvider::WriteAlarmDataToDB(int alarm)
 {
-    QString prepareQuery = "insert into alarm_data (date, time, alarm) VALUES ('" + getCurrentDate() + "','" + getCurrentTime() +"'," + QString::number(alarm) +")";
-    return runQuery(prepareQuery);
+    bool aIsOpen = openDB();
+    if(aIsOpen)
+    {
+        bool isSuccessFull = queryEngine->runQuery(QueryEngine::getInsertQuery(TABLE::ALARM_DATA, QString::number(alarm)));
+        closeDB();
+        return isSuccessFull;
+    }
+    return false;
 }
 
 bool CDBAccessProvider::WriteNotificationDataToDB(QString aNotificationMsg)
 {
-    QString prepareQuery = "insert into notification (date, time, msg) VALUES ('" + getCurrentDate() + "','" + getCurrentTime() +"'," + aNotificationMsg +"')";
-    return runQuery(prepareQuery);
+    bool aIsOpen = openDB();
+    if(aIsOpen)
+    {
+        bool isSuccessFull = queryEngine->runQuery(QueryEngine::getInsertQuery(TABLE::NOTIFICATION_DATA, aNotificationMsg));
+        closeDB();
+        return isSuccessFull;
+    }
+    return false;
 }
 
 QList<so2_value_record> CDBAccessProvider::readSo2ValueRecords(QDate* aSinceDate, QTime* aSinceTime, QDate* aTillDate, QTime* aTillTime)
 {
-    if(!db->open())
-    {
-        qInfo() << "ERROR : Opening database failed.";
-        //return false;
-    }
     QList<so2_value_record> recordList;
-    QString prepareQuery = "select * from so2_level";
-    QSqlQuery query;
-    query.exec(prepareQuery);
-    qDebug() << "QueryExecuted : " << prepareQuery << query.lastError();
-
-    while (query.next())
+    openDB();
+    queryEngine->runQuery(QueryEngine::getSelectQuery(TABLE::SO2_LEVEL, aSinceDate, aSinceTime, aTillDate, aTillTime));
+    while (queryEngine->getNextRecord())
     {
        so2_value_record record;
-       record.date = query.value(0).toDate();
-       record.time = query.value(0).toTime();
-       record.so2_value = query.value(2).toInt();
+       record.date = queryEngine->getColumnValue(0).toDate();
+       record.time = queryEngine->getColumnValue(1).toTime();
+       record.so2_value = queryEngine->getColumnValue(2).toInt();
        recordList.push_back(record);
     }
-    db->close();
+
+    closeDB();
     return recordList;
 }
 
-QList<alarm_record> CDBAccessProvider::readAlarmDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime)
+QList<alarm_record> CDBAccessProvider::readAlarmDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
 {
-    QList<alarm_record> records;
-    return records;
-}
-
-QList<notification_record> CDBAccessProvider::readNotificationDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime)
-{
-    QList<notification_record> records;
-    return records;
-}
-
-bool CDBAccessProvider::runQuery(QString aQuery)
-{
-    if(!db->open())
+    QList<alarm_record> recordList;
+    openDB();
+    QString query = QueryEngine::getSelectQuery(TABLE::ALARM_DATA, aSinceDate, aSinceTime, aTillDate, aTillTime);
+    while (queryEngine->getNextRecord())
     {
-        qInfo() << "ERROR : Opening database failed.";
-        return false;
+       alarm_record record;
+       record.date = queryEngine->getColumnValue(0).toDate();
+       record.time = queryEngine->getColumnValue(1).toTime();
+       record.alarmCode = queryEngine->getColumnValue(2).toInt();
+       recordList.push_back(record);
     }
 
-    QSqlQuery query(aQuery);
-    bool ret = query.exec();
+    closeDB();
+    return recordList;
+}
 
-    if(!ret)
+QList<notification_record> CDBAccessProvider::readNotificationDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
+{
+    QList<notification_record> recordList;
+    openDB();
+    QString query = QueryEngine::getSelectQuery(TABLE::NOTIFICATION_DATA, aSinceDate, aSinceTime, aTillDate, aTillTime);
+    while (queryEngine->getNextRecord())
     {
-        // Error while running query, log error
-        qInfo() << "ERROR :" << query.lastError();
+       notification_record record;
+       record.date = queryEngine->getColumnValue(0).toDate();
+       record.time = queryEngine->getColumnValue(1).toTime();
+       record.msg = queryEngine->getColumnValue(2).toInt();
+       recordList.push_back(record);
     }
 
-    db->close();
-    return ret;
+    closeDB();
+    return recordList;
 }
