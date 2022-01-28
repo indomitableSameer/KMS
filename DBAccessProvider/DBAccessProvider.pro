@@ -12,14 +12,14 @@ CONFIG += c++11
 
 SOURCES += \
     DBAccessProvider.cpp \
-    queryengine.cpp
+    QueryEngine.cpp
 
 HEADERS += \
     DBAccessProvider.h \
     IDBReader.h \
     IDBWriter.h \
     ISqlTableList.h \
-    queryengine.h
+    QueryEngine.h
 
 # Default rules for deployment.
 unix {
