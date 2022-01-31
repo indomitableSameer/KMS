@@ -6,6 +6,9 @@
 
 class KMSLogic : public QObject
 {
+
+Q_OBJECT
+
 public:
     explicit KMSLogic(QObject *parent = nullptr);
     void kmsLogicFunction(double ppmLevel);
@@ -16,6 +19,7 @@ public:
 
    public slots:
         KmsResponse kmsQueueData();
+        void kmsLogicFunction(double ppmLevel);
 
 };
 
