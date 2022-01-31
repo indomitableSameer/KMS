@@ -6,15 +6,16 @@
 #include <QSqlDatabase>
 #include <IDBReader.h>
 #include <ISqlTableList.h>
+#include <QueryEngine.h>
 
 class CDBAccessProvider : public QObject, public IDBWriter, public IDBReader
 {
     Q_OBJECT
     QSqlDatabase *db;
+    QueryEngine *queryEngine;
     bool openDB();
     bool isDBOpen();
-    void close();
-    bool runQuery(QString aQuery);
+    void closeDB();
 public:
     CDBAccessProvider();
     virtual ~CDBAccessProvider() {}
@@ -22,8 +23,8 @@ public:
     bool WriteAlarmDataToDB(int alarm);
     bool WriteNotificationDataToDB(QString aNotificationMsg);
     QList<so2_value_record> readSo2ValueRecords(QDate* aSinceDate=NULL, QTime* aSinceTime=NULL, QDate* aTillDate=NULL, QTime* aTillTime=NULL);
-    QList<alarm_record> readAlarmDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime);
-    QList<notification_record> readNotificationDataRecords(QDate aSinceDate, QTime aSinceTime, QDate aTillDate, QTime aTillTime);
+    QList<alarm_record> readAlarmDataRecords(QDate* aSinceDate=NULL, QTime* aSinceTime=NULL, QDate* aTillDate=NULL, QTime* aTillTime=NULL);
+    QList<notification_record> readNotificationDataRecords(QDate* aSinceDate=NULL, QTime* aSinceTime=NULL, QDate* aTillDate=NULL, QTime* aTillTime=NULL);
 };
 
 #endif // CDBACCESSPROVIDER_H

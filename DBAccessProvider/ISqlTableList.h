@@ -4,9 +4,9 @@
 
 enum class TABLE
 {
-    SO2_LEVEL,
-    ALARM_DATA,
-    NOTIFICATION_DATA
+    SO2_LEVEL = 1,
+    ALARM_DATA = 2,
+    NOTIFICATION_DATA = 3
 };
 
 
