@@ -1,7 +1,7 @@
 #ifndef KMSLOGIC_H
 #define KMSLOGIC_H
 
-#include <KmsResponse.h>
+#include <kmsresponse.h>
 #include <QObject>
 
 class KMSLogic : public QObject
@@ -19,8 +19,7 @@ public:
 
    public slots:
         KmsResponse kmsQueueData();
-        void kmsLogicFunction(double ppmLevel);
-
+        //void kmsLogicFunction(double ppmLevel);
 };
 
 #endif // KMSLOGIC_H

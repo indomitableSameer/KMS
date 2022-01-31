@@ -114,7 +114,7 @@ QList<notification_record> CDBAccessProvider::readNotificationDataRecords(QDate 
        notification_record record;
        record.date = queryEngine->getColumnValue(0).toDate();
        record.time = queryEngine->getColumnValue(1).toTime();
-       record.msg = queryEngine->getColumnValue(2).toInt();
+       record.msg = queryEngine->getColumnValue(2).toString();
        recordList.push_back(record);
     }
 

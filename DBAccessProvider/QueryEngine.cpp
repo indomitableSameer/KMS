@@ -7,7 +7,7 @@ QueryEngine::QueryEngine(QSqlDatabase* aDbFileObject)
 {
     if(aDbFileObject == NULL)
     {
-        throw std::_INVALID_ARGUMENT;
+        throw std::invalid_argument("DB file object is null");
     }
 
     db = aDbFileObject;

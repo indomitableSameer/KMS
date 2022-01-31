@@ -57,7 +57,7 @@ DataReceiver::DataReceiver(QString aCsvPath)
     if(aCsvPath.isNull() || aCsvPath.isEmpty())
     {
         qDebug() << "ERROR: Invalid Argument to DataReceiver constructor " << aCsvPath;
-        throw std::_INVALID_ARGUMENT;
+        throw std::invalid_argument("path is not valid");
 
     }
 
