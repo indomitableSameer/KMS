@@ -6,15 +6,14 @@
 #include "alarmpredictionlogic.h"
 #include "kmsresponse.h"
 #include <queue>
+#include <QtDebug>
 
 double ppmLevel = 600;
 queue<KmsResponse> dataQueue;
 
-
-KMSLogic::KMSLogic(QObject *parent)
-    : QObject{parent}
+KMSLogic::KMSLogic()
 {
-
+    initialize();
 }
 
 void KMSLogic::kmsLogicFunction(double ppmLevel)
@@ -37,9 +36,23 @@ void KMSLogic::kmsLogicFunction(double ppmLevel)
 
 void KMSLogic::KmsDataReceiverFunction()
 {
-    DataReceiver dataReceiver("Path to CSV");
+    //DataReceiver dataReceiver("Path to CSV");
     KMSLogic kmsLogic;
-    KMSLogic::connect(&dataReceiver,&DataReceiver::dataAvailable,&kmsLogic,&KMSLogic::kmsLogicFunction);
+    //KMSLogic::connect(&dataReceiver,&DataReceiver::dataAvailable,&kmsLogic,&KMSLogic::kmsLogicFunction);
+}
+
+bool KMSLogic::startProcessing()
+{
+    m_dataReceiver->start();
+    return true;
+}
+
+void KMSLogic::initialize()
+{
+    m_dataReceiver = new DataReceiver("E:\\QtLearning\\build-KMS_T-Desktop_Qt_5_15_1_MinGW_32_bit-Debug\\UserInterface\\debug\\testdata.csv");
+    m_db_reader = new DBAccessProvider();
+    m_db_writer = new DBAccessProvider();
+    DataReceiver::connect(m_dataReceiver, &IDataReceiver::dataAvailable, this, &KMSLogic::processDataReceiver);
 }
 
 KmsResponse KMSLogic::kmsQueueData()
@@ -47,4 +60,15 @@ KmsResponse KMSLogic::kmsQueueData()
     //KmsResponse latestQueueData;
    return dataQueue.front();
 
+}
+
+void KMSLogic::processDataReceiver(int so2ppm)
+{
+    QDateTime local(QDateTime::currentDateTime());
+    qDebug() << "Local date is:" << local.date().toString();
+    qDebug() << "Local time is:" << local.time().toString();
+    QDate d; QTime t;
+    qDebug() << "test date is:" << d.isValid();
+    qDebug() << "test time is:" << t.isValid();
+    qDebug() << so2ppm << " -> data received\n";
 }

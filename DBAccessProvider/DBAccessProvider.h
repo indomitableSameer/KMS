@@ -1,5 +1,5 @@
-#ifndef CDBACCESSPROVIDER_H
-#define CDBACCESSPROVIDER_H
+#ifndef DBACCESSPROVIDER_H
+#define DBACCESSPROVIDER_H
 
 #include <QObject>
 #include <IDBWriter.h>
@@ -8,7 +8,7 @@
 #include <ISqlTableList.h>
 #include <QueryEngine.h>
 
-class CDBAccessProvider : public QObject, public IDBWriter, public IDBReader
+class DBAccessProvider : public QObject, public IDBWriter, public IDBReader
 {
     Q_OBJECT
     QSqlDatabase *db;
@@ -17,8 +17,8 @@ class CDBAccessProvider : public QObject, public IDBWriter, public IDBReader
     bool isDBOpen();
     void closeDB();
 public:
-    CDBAccessProvider();
-    virtual ~CDBAccessProvider() {}
+    DBAccessProvider();
+    virtual ~DBAccessProvider() {}
     bool WriteSo2LevelToDB(int aSo2Value);
     bool WriteAlarmDataToDB(int alarm);
     bool WriteNotificationDataToDB(QString aNotificationMsg);

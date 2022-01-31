@@ -16,8 +16,7 @@ class DataReceiver : public IDataReceiver
     bool ValidateFileAccess();
     bool GetRowFromCsv(int& aSO2);
     void ReadDataPriodically();
-signals:
-    void dataAvailable(int value);
+
 public:
     DataReceiver(QString aCsvPath);
     virtual ~DataReceiver() {}

@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <stdexcept>
 
-#define DATA_READ_INTERVAL    60000
+#define DATA_READ_INTERVAL    30000
 
 bool DataReceiver::ValidateFileAccess()
 {
@@ -66,10 +66,6 @@ DataReceiver::DataReceiver(QString aCsvPath)
 
 bool DataReceiver::start()
 {
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &DataReceiver::ReadDataPriodically);
-    timer->start(DATA_READ_INTERVAL);
-
     m_file = new QFile(m_csvLocation);
     if(!m_file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -79,5 +75,9 @@ bool DataReceiver::start()
     }
 
     m_stream = new QTextStream(m_file);
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &DataReceiver::ReadDataPriodically);
+    timer->start(DATA_READ_INTERVAL);
     return true;
 }

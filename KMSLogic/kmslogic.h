@@ -2,6 +2,9 @@
 #define KMSLOGIC_H
 
 #include <kmsresponse.h>
+#include <IDataReceiver.h>
+#include <IDBReader.h>
+#include <IDBWriter.h>
 #include <QObject>
 
 class KMSLogic : public QObject
@@ -9,17 +12,22 @@ class KMSLogic : public QObject
 
 Q_OBJECT
 
+private:
+    IDataReceiver* m_dataReceiver;
+    IDBReader* m_db_reader;
+    IDBWriter* m_db_writer;
+    void initialize();
+
+signals:
+        void kmssignal();
+public slots:
+        KmsResponse kmsQueueData();
+        void processDataReceiver(int so2ppm);
 public:
-    explicit KMSLogic(QObject *parent = nullptr);
+    KMSLogic();
     void kmsLogicFunction(double ppmLevel);
     void KmsDataReceiverFunction();
-
-    signals:
-        void kmssignal();
-
-   public slots:
-        KmsResponse kmsQueueData();
-        //void kmsLogicFunction(double ppmLevel);
+    bool startProcessing();
 };
 
 #endif // KMSLOGIC_H

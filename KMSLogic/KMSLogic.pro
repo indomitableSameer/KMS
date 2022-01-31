@@ -5,7 +5,8 @@ QT += sql
 TEMPLATE = lib
 CONFIG += staticlib
 INCLUDEPATH += ../DataReceiver ../DBAccessProvider/
-LIBS += L../DataReceiver/debug -ldatareceiver -L../DBAccessProvider/debug -ldbAccessprovider
+#LIBS += L../DataReceiver/debug -ldatareceiver -L../DBAccessProvider/debug -ldbAccessprovider
+#LIBS +=
 CONFIG += c++11
 CONFIG += console
 

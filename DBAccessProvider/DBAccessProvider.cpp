@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <QueryEngine.h>
 
-bool CDBAccessProvider::openDB()
+bool DBAccessProvider::openDB()
 {
     if(!db->open())
     {
@@ -18,12 +18,12 @@ bool CDBAccessProvider::openDB()
     return true;
 }
 
-void CDBAccessProvider::closeDB()
+void DBAccessProvider::closeDB()
 {
     db->close();
 }
 
-CDBAccessProvider::CDBAccessProvider()
+DBAccessProvider::DBAccessProvider()
 {
         QSqlDatabase dbtmp = QSqlDatabase::addDatabase("QSQLITE");
         db = new QSqlDatabase(dbtmp);
@@ -32,7 +32,7 @@ CDBAccessProvider::CDBAccessProvider()
         queryEngine = new QueryEngine(db);
 }
 
-bool CDBAccessProvider::WriteSo2LevelToDB(int aSo2Value)
+bool DBAccessProvider::WriteSo2LevelToDB(int aSo2Value)
 {
    bool aIsOpen = openDB();
    if(aIsOpen)
@@ -44,7 +44,7 @@ bool CDBAccessProvider::WriteSo2LevelToDB(int aSo2Value)
    return false;
 }
 
-bool CDBAccessProvider::WriteAlarmDataToDB(int alarm)
+bool DBAccessProvider::WriteAlarmDataToDB(int alarm)
 {
     bool aIsOpen = openDB();
     if(aIsOpen)
@@ -56,7 +56,7 @@ bool CDBAccessProvider::WriteAlarmDataToDB(int alarm)
     return false;
 }
 
-bool CDBAccessProvider::WriteNotificationDataToDB(QString aNotificationMsg)
+bool DBAccessProvider::WriteNotificationDataToDB(QString aNotificationMsg)
 {
     bool aIsOpen = openDB();
     if(aIsOpen)
@@ -68,7 +68,7 @@ bool CDBAccessProvider::WriteNotificationDataToDB(QString aNotificationMsg)
     return false;
 }
 
-QList<so2_value_record> CDBAccessProvider::readSo2ValueRecords(QDate* aSinceDate, QTime* aSinceTime, QDate* aTillDate, QTime* aTillTime)
+QList<so2_value_record> DBAccessProvider::readSo2ValueRecords(QDate* aSinceDate, QTime* aSinceTime, QDate* aTillDate, QTime* aTillTime)
 {
     QList<so2_value_record> recordList;
     openDB();
@@ -86,7 +86,7 @@ QList<so2_value_record> CDBAccessProvider::readSo2ValueRecords(QDate* aSinceDate
     return recordList;
 }
 
-QList<alarm_record> CDBAccessProvider::readAlarmDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
+QList<alarm_record> DBAccessProvider::readAlarmDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
 {
     QList<alarm_record> recordList;
     openDB();
@@ -104,7 +104,7 @@ QList<alarm_record> CDBAccessProvider::readAlarmDataRecords(QDate *aSinceDate, Q
     return recordList;
 }
 
-QList<notification_record> CDBAccessProvider::readNotificationDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
+QList<notification_record> DBAccessProvider::readNotificationDataRecords(QDate *aSinceDate, QTime *aSinceTime, QDate *aTillDate, QTime *aTillTime)
 {
     QList<notification_record> recordList;
     openDB();
