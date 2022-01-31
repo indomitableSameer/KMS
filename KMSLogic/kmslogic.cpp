@@ -24,11 +24,6 @@ void KMSLogic::kmsLogicFunction(double ppmLevel)
     AlarmSound alarmSoundObject;
     KmsResponse responseData;
 
-    //int commandValue;
-    //string commandPrediction;
-
-    //Receive Data From DataReceiver : ppmLevel
-
      int commandValue = alarmCommandObject.alarmCommand(ppmLevel);
      string commandPrediction = alarmPredictionObject.alarmPrediction(ppmLevel);
 
@@ -42,12 +37,14 @@ void KMSLogic::kmsLogicFunction(double ppmLevel)
 
 void KMSLogic::KmsDataReceiverFunction()
 {
-    //Receive Data From DataReceiver : ppmLevel
+    DataReceiver dataReceiver("Path to CSV");
+    KMSLogic kmsLogic;
+    KMSLogic::connect(&dataReceiver,&DataReceiver::dataAvailable,&kmsLogic,&KMSLogic::kmsLogicFunction);
 }
 
 KmsResponse KMSLogic::kmsQueueData()
 {
-    KmsResponse latestQueueData;
+    //KmsResponse latestQueueData;
    return dataQueue.front();
 
 }
