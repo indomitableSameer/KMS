@@ -1,7 +1,6 @@
 #ifndef KMSLOGIC_H
 #define KMSLOGIC_H
 
-#include <kmsresponse.h>
 #include <IDataReceiver.h>
 #include <IDBReader.h>
 #include <IDBWriter.h>

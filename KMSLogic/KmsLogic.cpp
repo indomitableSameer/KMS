@@ -1,11 +1,9 @@
-#include "KmsLogic.h"
-#include "DataReceiver.h"
-#include "DBAccessProvider.h"
+#include <KmsLogic.h>
+#include <DataReceiver.h>
+#include <DBAccessProvider.h>
 #include <AlarmLogic.h>
-#include "AlarmSoundManager.h"
-#include "AlarmPredictionLogic.h"
-#include "kmsresponse.h"
-#include <queue>
+#include <AlarmSoundManager.h>
+#include <AlarmPredictionLogic.h>
 #include <QtDebug>
 
 KMSLogic::KMSLogic()

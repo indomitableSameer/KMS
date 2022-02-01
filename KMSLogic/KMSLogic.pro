@@ -20,8 +20,7 @@ SOURCES += \
     AlarmPredictionLogic.cpp \
     AlarmSoundManager.cpp \
     KmsLogic.cpp \
-    NotificationGenerator.cpp \
-    kmsresponse.cpp
+    NotificationGenerator.cpp
 
 HEADERS += \
     AlarmLogic.h \
@@ -31,8 +30,7 @@ HEADERS += \
     IAlarmType.h \
     KmsLogic.h \
     NotificationGenerator.h \
-    UIdata.h \
-    kmsresponse.h
+    UIdata.h
 
 # Default rules for deployment.
 unix {
