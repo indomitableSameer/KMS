@@ -20,6 +20,7 @@ void KMSLogic::initialize()
     m_db_writer = new DBAccessProvider();
     m_alarmManager = new AlarmManager();
     m_predictionLogic = new AlarmPredictionLogic();
+    m_notificationGenerator = new NotificationGenerator();
     DataReceiver::connect(m_dataReceiver, &IDataReceiver::dataAvailable, this, &KMSLogic::processDataReceiver);
 }
 
@@ -32,18 +33,19 @@ bool KMSLogic::startProcessing()
 void KMSLogic::processDataReceiver(int so2ppm)
 {
     QDateTime local(QDateTime::currentDateTime());
-    qDebug() << "Local date is:" << local.date().toString();
-    qDebug() << "Local time is:" << local.time().toString();
-    QDate d; QTime t;
-    qDebug() << "test date is:" << d.isValid();
-    qDebug() << "test time is:" << t.isValid();
-    qDebug() << so2ppm << " -> data received\n";
+    qDebug() << "Local date is:" << local.date().toString()<< "Local time is:" << local.time().toString() << " SO2 ppm :" << so2ppm ;
 
     IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
     int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
-
     m_db_writer->WriteSo2LevelToDB(so2ppm);
-    m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
 
-    qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
+    if(aAlarmRaised != IAlarmType::NONE)
+    {
+         QString aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, aBlockageProbablity);
+         m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
+         m_db_writer->WriteNotificationDataToDB(aNotification);
+
+         qDebug() << aNotification;
+         qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
+    }
 }

@@ -3,15 +3,14 @@
 
 #include <IAlarmType.h>
 
-const int redAlarmLevel = 15000;
-const int yellowAlarmLevel =  10000;
+#define RED_ALARM_LEVEL   15000
+#define YELLOW_ALARM_LEVEL    10000
 
 class AlarmLogic
 {
 
 private:
     IAlarmType m_activeAlarm;
-
 public:
     AlarmLogic();
     IAlarmType CheckAlarmingSituation(int ppmLevel);

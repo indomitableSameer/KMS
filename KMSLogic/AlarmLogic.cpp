@@ -5,18 +5,18 @@ using namespace std;
 
 AlarmLogic::AlarmLogic()
 {
-
+    m_activeAlarm = IAlarmType::NONE;
 }
 
 IAlarmType AlarmLogic::CheckAlarmingSituation(int ppmLevel)
 {
     // RED alarm has highest priority
-    if (ppmLevel >= redAlarmLevel)
+    if (ppmLevel >= RED_ALARM_LEVEL)
     {
         m_activeAlarm = IAlarmType::RED;
     }
     // yellow alarm can not overrider red alarm
-    if (m_activeAlarm !=IAlarmType::RED && ppmLevel >= yellowAlarmLevel)
+    if (m_activeAlarm !=IAlarmType::RED && ppmLevel >= YELLOW_ALARM_LEVEL)
     {
         m_activeAlarm = IAlarmType::YELLOW;
     }

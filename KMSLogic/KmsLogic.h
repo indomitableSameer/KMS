@@ -8,6 +8,7 @@
 #include <QObject>
 #include <AlarmManager.h>
 #include <AlarmPredictionLogic.h>
+#include <NotificationGenerator.h>
 
 class KMSLogic : public QObject
 {
@@ -20,6 +21,7 @@ private:
     IDBWriter* m_db_writer;
     AlarmManager* m_alarmManager;
     AlarmPredictionLogic* m_predictionLogic;
+    NotificationGenerator* m_notificationGenerator;
     void initialize();
 
 signals:
