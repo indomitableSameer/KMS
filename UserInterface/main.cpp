@@ -1,5 +1,5 @@
 #include <kms.h>
-#include <kmslogic.h>
+#include <KmsLogic.h>
 #include <QApplication>
 
 int main(int argc, char *argv[])

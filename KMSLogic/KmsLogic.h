@@ -6,6 +6,7 @@
 #include <IDBReader.h>
 #include <IDBWriter.h>
 #include <QObject>
+#include <alarmmanager.h>
 
 class KMSLogic : public QObject
 {
@@ -16,12 +17,13 @@ private:
     IDataReceiver* m_dataReceiver;
     IDBReader* m_db_reader;
     IDBWriter* m_db_writer;
+    AlarmManager* m_alarmManager;
     void initialize();
 
 signals:
         void kmssignal();
 public slots:
-        KmsResponse kmsQueueData();
+        //KmsResponse kmsQueueData();
         void processDataReceiver(int so2ppm);
 public:
     KMSLogic();

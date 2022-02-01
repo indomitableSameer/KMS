@@ -1,4 +1,4 @@
-#include "datareceiver.h"
+#include <DataReceiver.h>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QTimer>

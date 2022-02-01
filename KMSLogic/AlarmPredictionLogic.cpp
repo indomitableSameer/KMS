@@ -1,4 +1,4 @@
-#include "alarmpredictionlogic.h"
+#include "AlarmPredictionLogic.h"
 #include <string>
 #include <iostream>
 
