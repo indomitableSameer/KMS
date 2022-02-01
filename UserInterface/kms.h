@@ -3,6 +3,16 @@
 
 #include <QMainWindow>
 
+
+#include <QtWidgets>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QCategoryAxis>
+
+
+
+using namespace  QtCharts;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class kms; }
 QT_END_NAMESPACE
