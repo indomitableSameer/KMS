@@ -6,7 +6,8 @@
 #include <IDBReader.h>
 #include <IDBWriter.h>
 #include <QObject>
-#include <alarmmanager.h>
+#include <AlarmManager.h>
+#include <AlarmPredictionLogic.h>
 
 class KMSLogic : public QObject
 {
@@ -18,6 +19,7 @@ private:
     IDBReader* m_db_reader;
     IDBWriter* m_db_writer;
     AlarmManager* m_alarmManager;
+    AlarmPredictionLogic* m_predictionLogic;
     void initialize();
 
 signals:

@@ -12,7 +12,7 @@ private:
 public:
     AlarmManager();
     ~AlarmManager();
-    bool HandlerAlarm(int so2ppm);
+    IAlarmType HandlerAlarm(int so2ppm);
 };
 
 #endif // ALARMMANAGER_H

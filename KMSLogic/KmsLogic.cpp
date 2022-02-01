@@ -1,7 +1,7 @@
 #include "KmsLogic.h"
 #include "DataReceiver.h"
 #include "DBAccessProvider.h"
-#include <alarmlogic.h>
+#include <AlarmLogic.h>
 #include "AlarmSoundManager.h"
 #include "AlarmPredictionLogic.h"
 #include "kmsresponse.h"
@@ -19,7 +19,7 @@ void KMSLogic::initialize()
     m_db_reader = new DBAccessProvider();
     m_db_writer = new DBAccessProvider();
     m_alarmManager = new AlarmManager();
-
+    m_predictionLogic = new AlarmPredictionLogic();
     DataReceiver::connect(m_dataReceiver, &IDataReceiver::dataAvailable, this, &KMSLogic::processDataReceiver);
 }
 
@@ -38,5 +38,12 @@ void KMSLogic::processDataReceiver(int so2ppm)
     qDebug() << "test date is:" << d.isValid();
     qDebug() << "test time is:" << t.isValid();
     qDebug() << so2ppm << " -> data received\n";
-    m_alarmManager->HandlerAlarm(so2ppm);
+
+    IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
+    int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
+
+    m_db_writer->WriteSo2LevelToDB(so2ppm);
+    m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
+
+    qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
 }

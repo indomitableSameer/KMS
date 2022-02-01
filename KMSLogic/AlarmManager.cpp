@@ -14,16 +14,16 @@ AlarmManager::~AlarmManager()
     delete m_alarmSoundManager;
 }
 
-bool AlarmManager::HandlerAlarm(int so2ppm)
+IAlarmType AlarmManager::HandlerAlarm(int so2ppm)
 {
     IAlarmType aAlarm = m_alarmLogic->CheckAlarmingSituation(so2ppm);
     if(aAlarm == IAlarmType::NONE)
     {
         qDebug() << "No Alarm raised..";
-        return false;
+        return IAlarmType::NONE;
     }
 
     qDebug() << "Alarm Raised.." ;
     m_alarmSoundManager->HandleAlarmSound(aAlarm);
-    return true;
+    return aAlarm;
 }

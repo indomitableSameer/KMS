@@ -8,7 +8,7 @@ class AlarmPredictionLogic
 {
 public:
     AlarmPredictionLogic();
-    string alarmPrediction(double ppmLevel);
+    int calculateBlockageProbablity(int ppmLevel);
 };
 
 #endif // ALARMPREDICTIONLOGIC_H

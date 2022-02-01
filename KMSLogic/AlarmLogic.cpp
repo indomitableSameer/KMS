@@ -1,4 +1,4 @@
-#include <alarmlogic.h>
+#include <AlarmLogic.h>
 #include <string>
 
 using namespace std;
@@ -11,17 +11,17 @@ AlarmLogic::AlarmLogic()
 IAlarmType AlarmLogic::CheckAlarmingSituation(int ppmLevel)
 {
     // RED alarm has highest priority
-    if (ppmLevel > redAlarmLevel)
+    if (ppmLevel >= redAlarmLevel)
     {
         m_activeAlarm = IAlarmType::RED;
     }
     // yellow alarm can not overrider red alarm
-    if (m_activeAlarm !=IAlarmType::RED && ppmLevel > yellowAlarmLevel)
+    if (m_activeAlarm !=IAlarmType::RED && ppmLevel >= yellowAlarmLevel)
     {
         m_activeAlarm = IAlarmType::YELLOW;
     }
-    // else set to none can not done. that can only be done when alarm is cancelled.
 
+    // else set to none can not done. that can only be done when alarm is cancelled.
     return m_activeAlarm;
 }
 
