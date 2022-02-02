@@ -1,20 +1,31 @@
 #include "kms.h"
 #include "ui_kms.h"
 
+void kms::graphupdate()
+{
+
+}
+
 kms::kms(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::kms)
 {
-    ui->setupUi(this);
+//    ui->setupUi(this);
 
 
     ui->setupUi(this);
     //![1]
-        QLineSeries *series = new QLineSeries();
-        *series << QPointF(0, 6) << QPointF(9, 4) << QPointF(15, 20) << QPointF(25, 12) << QPointF(29, 26);
-        QChart *chart = new QChart();
-        chart->legend()->hide();
-        chart->addSeries(series);
+    foreach(auto &x,listSo2Level)
+        qDebug()<<x;
+
+
+    series = new QLineSeries();
+//    *series << QPointF(0, listSo2Level[0]) << QPointF(9, listSo2Level[1]) << QPointF(15, listSo2Level[2]) << QPointF(25, listSo2Level[3]) << QPointF(29, listSo2Level[4]);
+    *series << QPointF(0 ,0); //, listSo2Level[0]) << QPointF(9, listSo2Level[1]) << QPointF(15, listSo2Level[2]) << QPointF(25, listSo2Level[3]) << QPointF(29, listSo2Level[4]);
+
+    chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
     //![1]
 
     //![2]
@@ -62,7 +73,7 @@ kms::kms(QWidget *parent)
 
         // Customize axis colors
         QPen axisPen(QRgb(0xd18952));
-        axisPen.setWidth(2);
+        axisPen.setWidth(1);
         axisX->setLinePen(axisPen);
         axisY->setLinePen(axisPen);
 
@@ -81,7 +92,7 @@ kms::kms(QWidget *parent)
 
     //![4]
     //
-        axisX->append( "Monday", 0);
+        axisX->append( "Monday", 5);
         axisX->append("Tuesday", 10);
         axisX->append("Wednesday", 15);
         axisX->append("Thursday", 20);
@@ -116,18 +127,87 @@ kms::kms(QWidget *parent)
               QWidget:: autoFillBackground();
            QPalette Pal = lcd->palette();
            Pal.setColor(QPalette::Normal, QPalette::WindowText, Qt::green);
-           Pal.setColor(QPalette::Normal, QPalette::Window, Qt::black);
+           Pal.setColor(QPalette::Normal, QPalette::Window, Qt::white);
+           Pal.setColor(QPalette::Normal,QPalette::Background, Qt::white );
+
+
            lcd->setPalette(Pal);
       //  lcd->setMinimumSize(250,100);
         //lcd->setParent(ui->lcdframe);
         QVBoxLayout *layoutLCD = new QVBoxLayout(ui->lcdframe);
         layoutLCD->addWidget(lcd);
     //![5]
+    //! plaintextedit settings
+     ui->plainTextEdit->setPlainText("tomatoes are expensive");
+
+     //QLine setting
+
+     ui->lineEdit->setEchoMode(QLineEdit::Password);
+
+
+
+
 
 }
 
 kms::~kms()
 {
     delete ui;
+}
+
+
+void kms::on_pushButton_clicked()
+{
+
+   //below is series for graph
+    series ->clear();
+    listSo2Level.append(2);
+
+    qInfo() << listSo2Level.size();
+    int sizelistSo2 = listSo2Level.size();
+    switch(sizelistSo2){
+    case 0:
+        break;
+    case 1:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]);
+        break;
+    case 2:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1]);
+     break;
+    case 3:
+        *series << QPointF(0, 0) << QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1]) << QPointF(15, listSo2Level[2]);
+     break;
+    case 4:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2]) << QPointF(20, listSo2Level[3]);
+     break;
+    case 5:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4]);
+     break;
+    case 6:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]);
+     break;
+    case 7:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6]);
+     break;
+   default:
+        listSo2Level.removeFirst();
+         //appending new value of S02 here coming from slotginal thingi
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6]);
+    break;
+
+
+}
+    //Below is the way to update text
+    ui->plainTextEdit->clear();
+    ui->plainTextEdit->setPlainText("Tomatoes & Potatoes are not expensive");
+}
+
+
+void kms::on_lineEdit_editingFinished()
+{
+
+     if(ui->lineEdit->text()=="secretkey"){
+        qInfo()<< "Correct Key";
+     }
 }
 

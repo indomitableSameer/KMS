@@ -9,6 +9,8 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
 
+#include <queue>
+
 
 
 using namespace  QtCharts;
@@ -21,11 +23,27 @@ class kms : public QMainWindow
 {
     Q_OBJECT
 
+public slots:
+   void graphupdate();
+
 public:
-    kms(QWidget *parent = nullptr);
+    kms(QWidget *parent = nullptr);  
     ~kms();
+
+
+
+private slots:
+    void on_pushButton_clicked();
+
+    void on_lineEdit_editingFinished();
 
 private:
     Ui::kms *ui;
+
+private:
+QLineSeries *series;
+QChart *chart;
+QList<int> listSo2Level ;
+
 };
 #endif // KMS_H
