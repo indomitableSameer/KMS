@@ -92,20 +92,25 @@ kms::kms(QWidget *parent)
 
     //![4]
     //
-        axisX->append( "Monday", 5);
-        axisX->append("Tuesday", 10);
-        axisX->append("Wednesday", 15);
-        axisX->append("Thursday", 20);
-        axisX->append("Friday", 25);
-        axisX->append("Saturday", 30);
-        axisX->append("Sunday", 35);
-        axisX->setRange(0, 35);
+        axisX->append( "5 min", 5);
+        axisX->append("10 min", 10);
+        axisX->append("15 min", 15);
+        axisX->append("20 min", 20);
+        axisX->append("25 min", 25);
+        axisX->append("30 min", 30);
+        axisX->append("35 min", 35);
+        axisX->append("40 min", 40);
+        axisX->append("45 min", 45);
+        axisX->append("50 min", 50);
+        axisX->append("55 min", 55);
+        axisX->append("60 min", 60);
+        axisX->setRange(0, 65);
 
 
-        axisY->append("Normal", 10);
-        axisY->append("Yellow", 20);
-        axisY->append("Red", 30);
-        axisY->setRange(0, 30);
+        axisY->append("Normal", 9999);
+        axisY->append("Yellow", 14999);
+        axisY->append("Red", 20000);
+        axisY->setRange(0, 20000);
 
         chart->addAxis(axisX, Qt::AlignBottom);
         chart->addAxis(axisY, Qt::AlignLeft);
@@ -161,11 +166,20 @@ void kms::on_pushButton_clicked()
 
    //below is series for graph
     series ->clear();
-    listSo2Level.append(2);
+    listSo2Level.append(2000);
 
+ //   qInfo() << listSo2Level.size();
+
+    if(listSo2Level.size()>12){                   //in case array size is above 12 which is our X axis max capacity
+     foreach(auto &x,listSo2Level)        //it will delete all list elements except the newest one
+     {
+          if(listSo2Level.size() != 1){
+             listSo2Level.removeFirst();
+         }
+     }
+    }
     qInfo() << listSo2Level.size();
-    int sizelistSo2 = listSo2Level.size();
-    switch(sizelistSo2){
+    switch(listSo2Level.size()){
     case 0:
         break;
     case 1:
@@ -189,10 +203,31 @@ void kms::on_pushButton_clicked()
     case 7:
         *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6]);
      break;
+    case 8:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+                << QPointF(40, listSo2Level[7]);
+        break;
+    case 9:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+                << QPointF(40, listSo2Level[7])<< QPointF(45, listSo2Level[8]);
+        break;
+    case 10:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+                << QPointF(40, listSo2Level[7])<< QPointF(45, listSo2Level[8])<< QPointF(50, listSo2Level[9]);
+        break;
+    case 11:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+                << QPointF(40, listSo2Level[7])<< QPointF(45, listSo2Level[8])<< QPointF(50, listSo2Level[9])<< QPointF(55, listSo2Level[10]);
+        break;
+    case 12:
+        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+                << QPointF(40, listSo2Level[7])<< QPointF(45, listSo2Level[8])<< QPointF(50, listSo2Level[9])<< QPointF(55, listSo2Level[10])<< QPointF(60, listSo2Level[11]);
+     break;
    default:
-        listSo2Level.removeFirst();
-         //appending new value of S02 here coming from slotginal thingi
-        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6]);
+
+//         //appending new value of S02 here coming from slotginal thingi
+//        *series << QPointF(0, 0)<< QPointF(5, listSo2Level[0]) << QPointF(10, listSo2Level[1])<< QPointF(15, listSo2Level[2])<< QPointF(20, listSo2Level[3]) << QPointF(25, listSo2Level[4])<< QPointF(30, listSo2Level[5]) << QPointF(35, listSo2Level[6])
+//                << QPointF(40, listSo2Level[7])<< QPointF(45, listSo2Level[8])<< QPointF(50, listSo2Level[9])<< QPointF(55, listSo2Level[10])<< QPointF(60, listSo2Level[11]);
     break;
 
 
