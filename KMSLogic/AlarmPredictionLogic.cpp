@@ -2,11 +2,6 @@
 #include <string>
 #include <iostream>
 
-double RED_FLAG_VALUE_P = 15000.00;
-double YELLOW_FLAG_VALUE_P = 10000.00;
-//double alarm_command_value_p;
-string alarm_predicted_value;
-
 AlarmPredictionLogic::AlarmPredictionLogic()
 {
 

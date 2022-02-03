@@ -27,3 +27,10 @@ IAlarmType AlarmManager::HandlerAlarm(int so2ppm)
     m_alarmSoundManager->HandleAlarmSound(aAlarm);
     return aAlarm;
 }
+
+bool AlarmManager::cancelAlarm()
+{
+    m_alarmLogic->cancelAlarm();
+    m_alarmSoundManager->stopAlarmSound();
+    return true;
+}

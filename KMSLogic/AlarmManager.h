@@ -13,6 +13,7 @@ public:
     AlarmManager();
     ~AlarmManager();
     IAlarmType HandlerAlarm(int so2ppm);
+    bool cancelAlarm();
 };
 
 #endif // ALARMMANAGER_H
