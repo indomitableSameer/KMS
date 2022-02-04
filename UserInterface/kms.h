@@ -1,14 +1,18 @@
 #ifndef KMS_H
 #define KMS_H
 
+#include <KmsLogic.h>
 #include <QMainWindow>
+
+
 #include <QtWidgets>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
-#include <queue>
 #include <IUiData.h>
-#include <KmsLogic.h>
+#include <queue>
+
+
 
 using namespace  QtCharts;
 
@@ -21,28 +25,29 @@ class kms : public QMainWindow
     Q_OBJECT
 
 public slots:
-    void graphupdate();
+   void graphupdate();
 
 public:
     kms(KMSLogic* logic, QWidget *parent = nullptr);
     ~kms();
+
 public slots:
     void DisplayProcessedData(IUiData aUiData);
 
 private slots:
     void on_pushButton_clicked();
+
     //void on_lineEdit_editingFinished();
 
 private:
     Ui::kms *ui;
-    KMSLogic* m_logic;
-    QLCDNumber* lcd;
+
 private:
-    QLineSeries *series;
-    QChart *chart;
-    QList<int> listSo2Level ;
-    QLCDNumber* setupLcd();
+QLineSeries *series;
+KMSLogic* m_logic;
+QChart *chart;
+QLCDNumber *lcd;
+QList<int> listSo2Level ;
 
 };
-
 #endif // KMS_H

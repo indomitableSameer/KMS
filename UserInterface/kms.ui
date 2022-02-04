@@ -133,9 +133,6 @@ background-color:rgb(255, 255, 255)</string>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QPlainTextEdit" name="plainTextEdit">
-            <property name="toolTip">
-             <string/>
-            </property>
             <property name="styleSheet">
              <string notr="true">
 font: italic 16pt &quot;Calibri&quot;;
@@ -147,9 +144,6 @@ border-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(17
           </item>
           <item>
            <widget class="QLineEdit" name="lineEdit">
-            <property name="toolTip">
-             <string>password</string>
-            </property>
             <property name="styleSheet">
              <string notr="true">background-color:rgb(255, 255, 255)</string>
             </property>
