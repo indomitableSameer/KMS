@@ -36,7 +36,7 @@ public slots:
 public:
     KMSLogic();
     bool startProcessing();
-    bool cancelAlarm();
+    IUiData cancelAlarm();
 };
 
 #endif // KMSLOGIC_H

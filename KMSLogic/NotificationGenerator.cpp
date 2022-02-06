@@ -12,13 +12,13 @@ QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int 
     if(aAlarm == IAlarmType::RED)
     {
         QDateTime local(QDateTime::currentDateTime());
-        msg = local.date().toString("dd.MM.yyyy");
+        msg = local.date().toString("dd.MM.yyyy") + " " + local.time().toString("hh:mm:ss");
         msg = msg + " CRITICAL!!! RED Alarm!! Blockage Probabity = " +  QString::number(probability);
     }
     else if(aAlarm == IAlarmType::YELLOW)
     {
         QDateTime local(QDateTime::currentDateTime());
-        msg = local.date().toString("dd.MM.yyyy");
+        msg = local.date().toString("dd.MM.yyyy") + " " + local.time().toString("hh:mm:ss");
         msg = msg + " ALERT !!! YELLOW Alarm!! Blockage Probabity = " +  QString::number(probability);
     }
 
@@ -29,7 +29,7 @@ QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int 
 QString NotificationGenerator::generateCancelNotification()
 {
     QDateTime local(QDateTime::currentDateTime());
-    QString msg = local.date().toString("dd.MM.yyyy") + " Alarm cancelled by @Admin";
+    QString msg = local.date().toString("dd.MM.yyyy") + " " + local.time().toString("hh:mm:ss") + " Alarm cancelled by @Admin";
     return msg;
 }
 

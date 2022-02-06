@@ -47,7 +47,8 @@ QLineSeries *series;
 KMSLogic* m_logic;
 QChart *chart;
 QLCDNumber *lcd;
-QList<int> listSo2Level ;
+QList<int> listSo2Level;
+static QString widgetStyle;
 
 };
 #endif // KMS_H

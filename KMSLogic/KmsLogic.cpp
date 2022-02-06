@@ -57,9 +57,15 @@ bool KMSLogic::startProcessing()
     return true;
 }
 
-bool KMSLogic::cancelAlarm()
+IUiData KMSLogic::cancelAlarm()
 {
-    return m_alarmManager->cancelAlarm();
+    QDateTime local(QDateTime::currentDateTime());
+
+    IUiData aUiData;
+    aUiData.setNotification(m_notificationGenerator->generateCancelNotification());
+    m_alarmManager->cancelAlarm();
+
+    return aUiData;
 }
 
 void KMSLogic::processDataReceiver(int so2ppm)
