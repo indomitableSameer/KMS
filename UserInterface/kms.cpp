@@ -98,9 +98,10 @@ kms::kms(KMSLogic* logic, QWidget *parent)
     axisX->setRange(0, 60);
 
 
-    axisY->append("SO2<9k", 9999);
-    axisY->append("10K<SO2<14.9K", 14999);
-    axisY->append("SO2>15000", 25000);
+    axisY->append("0", 0);
+    axisY->append("10000", 10000);
+    axisY->append("15000", 15000);
+    axisY->append("25000", 25000);
     axisY->setRange(0, 25000);
 
     chart->addAxis(axisX, Qt::AlignBottom);

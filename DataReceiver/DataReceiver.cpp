@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <stdexcept>
 
-#define DATA_READ_INTERVAL    30000
+#define DATA_READ_INTERVAL    60000
 
 bool DataReceiver::ValidateFileAccess()
 {

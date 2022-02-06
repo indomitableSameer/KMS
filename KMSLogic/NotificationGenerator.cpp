@@ -13,13 +13,13 @@ QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int 
     {
         QDateTime local(QDateTime::currentDateTime());
         msg = local.date().toString("dd.MM.yyyy");
-        msg = " CRITICAL!!! RED Alarm!! Blockage Probabity = " +  QString::number(probability);
+        msg = msg + " CRITICAL!!! RED Alarm!! Blockage Probabity = " +  QString::number(probability);
     }
     else if(aAlarm == IAlarmType::YELLOW)
     {
         QDateTime local(QDateTime::currentDateTime());
         msg = local.date().toString("dd.MM.yyyy");
-        msg = " ALERT !!! YELLOW Alarm!! Blockage Probabity = " +  QString::number(probability);
+        msg = msg + " ALERT !!! YELLOW Alarm!! Blockage Probabity = " +  QString::number(probability);
     }
 
     notificationList.enqueue(msg);
