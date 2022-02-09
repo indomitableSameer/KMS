@@ -3,16 +3,12 @@
 
 #include <KmsLogic.h>
 #include <QMainWindow>
-
-
 #include <QtWidgets>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
 #include <IUiData.h>
 #include <queue>
-
-
 
 using namespace  QtCharts;
 
@@ -24,9 +20,6 @@ class kms : public QMainWindow
 {
     Q_OBJECT
 
-public slots:
-   void graphupdate();
-
 public:
     kms(KMSLogic* logic, QWidget *parent = nullptr);
     ~kms();
@@ -37,18 +30,16 @@ public slots:
 private slots:
     void on_pushButton_clicked();
 
-    //void on_lineEdit_editingFinished();
-
 private:
     Ui::kms *ui;
 
 private:
-QLineSeries *series;
-KMSLogic* m_logic;
-QChart *chart;
-QLCDNumber *lcd;
-QList<int> listSo2Level;
-static QString widgetStyle;
+    QLineSeries *series;
+    KMSLogic* m_logic;
+    QChart *chart;
+    QLCDNumber *lcd;
+    QList<int> listSo2Level;
+    static QString widgetStyle;
 
 };
 #endif // KMS_H

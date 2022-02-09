@@ -49,6 +49,7 @@ void DataReceiver::ReadDataPriodically()
         qDebug() << "ERROR: Unable to get row from csv file.";
         return;
     }
+    //throw std::invalid_argument("NONE");
     emit dataAvailable(so2);
 }
 
@@ -58,7 +59,6 @@ DataReceiver::DataReceiver(QString aCsvPath)
     {
         qDebug() << "ERROR: Invalid Argument to DataReceiver constructor " << aCsvPath;
         throw std::invalid_argument("path is not valid");
-
     }
 
     m_csvLocation = aCsvPath;
@@ -66,6 +66,12 @@ DataReceiver::DataReceiver(QString aCsvPath)
 
 bool DataReceiver::start()
 {
+    if(!ValidateFileAccess())
+    {
+        qDebug() << "File not accessable";
+        return false;
+    }
+
     m_file = new QFile(m_csvLocation);
     if(!m_file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
