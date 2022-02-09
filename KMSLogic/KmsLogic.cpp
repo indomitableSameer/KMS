@@ -51,8 +51,6 @@ void KMSLogic::processor()
     emit processedDataAvailable(aUiData);
 }
 
-
-
 bool KMSLogic::startProcessing()
 {
     m_dataReceiver->start();
