@@ -22,6 +22,7 @@ class kms : public QMainWindow
 
 public:
     kms(KMSLogic* logic, QWidget *parent = nullptr);
+    void showNotification(QString aMsg);
     ~kms();
 
 public slots:

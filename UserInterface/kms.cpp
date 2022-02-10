@@ -75,6 +75,11 @@ kms::kms(KMSLogic* logic, QWidget *parent)
     widgetStyle = ui->frame->styleSheet();
 }
 
+void kms::showNotification(QString aMsg)
+{
+    ui->listWidget->insertItem(0, aMsg);
+}
+
 kms::~kms()
 {
     delete ui;
