@@ -80,7 +80,9 @@ kms::~kms()
     delete ui;
 }
 
-//int i =0;
+/*
+ * Hazard id : _H10.1_distinctive_state_
+*/
 void kms::DisplayProcessedData(IUiData aUiData)
 {
     try
@@ -102,6 +104,11 @@ void kms::DisplayProcessedData(IUiData aUiData)
         }
         else
         {
+            QString msg = aUiData.getNotificationMsg();
+            if(!msg.isNull() && !msg.isEmpty())
+            {
+                ui->listWidget->insertItem(0, aUiData.getNotificationMsg());
+            }
             ui->frame->setStyleSheet(style);
         }
     }
@@ -112,7 +119,9 @@ void kms::DisplayProcessedData(IUiData aUiData)
     }
 }
 
-
+/*
+ * Hazard id : _H11.1_authorised_alarm_cancel_
+*/
 void kms::on_pushButton_clicked()
 {
     if(ui->lineEdit->text()=="1234"){

@@ -15,6 +15,10 @@ AlarmSoundManager::AlarmSoundManager()
     }
 }
 
+/*
+ *  Hazard Id : _H2.1_2_must_generate_alarm_
+ *              _H10.2_distinctive_sound_
+*/
 void AlarmSoundManager::HandleAlarmSound(IAlarmType aAlarmType)
 {
     if(aAlarmType == IAlarmType::RED)

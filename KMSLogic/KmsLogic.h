@@ -16,13 +16,14 @@ class KMSLogic : public QObject
 
     Q_OBJECT
 private:
-    QQueue<raw_data> UnprocessedDataQueue;
     IDataReceiver* m_dataReceiver;
     IDBReader* m_db_reader;
     IDBWriter* m_db_writer;
     AlarmManager* m_alarmManager;
     AlarmPredictionLogic* m_predictionLogic;
     NotificationGenerator* m_notificationGenerator;
+
+    int dataReceiverFailCounter;
 
     void initialize();
     void processor();

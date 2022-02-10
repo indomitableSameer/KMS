@@ -8,6 +8,11 @@ AlarmLogic::AlarmLogic()
     m_activeAlarm = IAlarmType::NONE;
 }
 
+/*
+ *  Hazard Id : _H2.1_1_must_generate_alarm_
+ *              _H3.1_must_generate_alarm_
+ *              _H8.1_must_generate_alarm_
+ */
 IAlarmType AlarmLogic::CheckAlarmingSituation(int ppmLevel)
 {
     // RED alarm has highest priority

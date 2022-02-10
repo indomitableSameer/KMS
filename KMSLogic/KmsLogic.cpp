@@ -19,32 +19,55 @@ void KMSLogic::initialize()
     m_alarmManager = new AlarmManager();
     m_predictionLogic = new AlarmPredictionLogic();
     m_notificationGenerator = new NotificationGenerator();
+    dataReceiverFailCounter = 0;
     DataReceiver::connect(m_dataReceiver, &IDataReceiver::dataAvailable, this, &KMSLogic::processDataReceiver);
 }
 
+/*
+ * Hazard Id : _H1.4_error_on_failed_payload_
+ *             _H4.2_timestamp_
+*/
 void KMSLogic::processor()
 {
     // TODO - put this into thread and use wait conditions to wakeup thread to process data
-    raw_data data = UnprocessedDataQueue.dequeue();
+    int so2ppm = m_dataReceiver->getFromQueue();
+    if(so2ppm == -1)
+    {
+        if(dataReceiverFailCounter < 3)
+        {
+            dataReceiverFailCounter++;
+            return;
+        }
+        else
+        {
+            IUiData aUiData;
+            QDateTime local(QDateTime::currentDateTime());
+            aUiData.setDate(local);
+            aUiData.setSo2Ppm(so2ppm);
+            aUiData.setNotification("SYSTEM ERROR !! Unable to receiver sensor values.");
+            emit processedDataAvailable(aUiData);
+        }
+    }
 
     QString aNotification = "";
-    IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(data.so2PpmValue);
-    int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(data.so2PpmValue);
-    m_db_writer->WriteSo2LevelToDB(data.so2PpmValue);
+    IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
+    int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
+    m_db_writer->WriteSo2LevelToDB(so2ppm);
 
     if(aAlarmRaised != IAlarmType::NONE)
     {
-         aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, aBlockageProbablity);
-         m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
-         m_db_writer->WriteNotificationDataToDB(aNotification);
+        aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, so2ppm, aBlockageProbablity);
+        m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
+        m_db_writer->WriteNotificationDataToDB(aNotification);
 
-         qDebug() << aNotification;
-         qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
+        qDebug() << aNotification;
+        qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
     }
 
     IUiData aUiData;
-    aUiData.setDate(data.dateTime);
-    aUiData.setSo2Ppm(data.so2PpmValue);
+    QDateTime local(QDateTime::currentDateTime());
+    aUiData.setDate(local);
+    aUiData.setSo2Ppm(so2ppm);
     aUiData.setNotification(aNotification);
     aUiData.setAlarmType(aAlarmRaised);
 
@@ -70,35 +93,5 @@ IUiData KMSLogic::cancelAlarm()
 
 void KMSLogic::processDataReceiver(int so2ppm)
 {
-    QDateTime local(QDateTime::currentDateTime());
-
-    raw_data data;
-    data.dateTime = local;
-    data.so2PpmValue = so2ppm;
-
-    //UnprocessedDataQueue.enqueue(data);
-    QString aNotification;
-    qDebug() << "Local date is:" << local.date().toString()<< "Local time is:" << local.time().toString() << " SO2 ppm :" << so2ppm ;
-
-    IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
-    int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
-    m_db_writer->WriteSo2LevelToDB(so2ppm);
-
-    if(aAlarmRaised != IAlarmType::NONE)
-    {
-         aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, aBlockageProbablity);
-         m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
-         m_db_writer->WriteNotificationDataToDB(aNotification);
-
-         qDebug() << aNotification;
-         qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
-    }
-
-    IUiData aUiData;
-    aUiData.setDate(data.dateTime);
-    aUiData.setSo2Ppm(data.so2PpmValue);
-    aUiData.setNotification(aNotification);
-    aUiData.setAlarmType(aAlarmRaised);
-
-    emit processedDataAvailable(aUiData);
+    processor();
 }

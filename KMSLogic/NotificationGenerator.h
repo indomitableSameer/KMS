@@ -10,7 +10,7 @@ private:
     QQueue<QString> notificationList;
 public:
     NotificationGenerator();
-    QString generateAlarmNotification(IAlarmType aAlarm, int probability);
+    QString generateAlarmNotification(IAlarmType aAlarm, int so2ppm, int probability);
     QString generateCancelNotification();
 };
 

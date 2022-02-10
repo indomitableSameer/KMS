@@ -10,6 +10,7 @@ signals:
     void dataAvailable(int value);
 public:
     virtual bool start() = 0;
+    virtual int getFromQueue() = 0;
 };
 
 #endif // IDATARECEIVER_H

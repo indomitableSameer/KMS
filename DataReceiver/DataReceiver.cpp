@@ -7,12 +7,15 @@
 
 #define DATA_READ_INTERVAL    60000
 
-bool DataReceiver::ValidateFileAccess()
+bool DataReceiver::ValidateFileAccess(QString aFilePath)
 {
-    QFileInfo aCsvfile(m_csvLocation);
+    QFileInfo aCsvfile(aFilePath);
     return aCsvfile.exists() && aCsvfile.isReadable() && aCsvfile.size()!=0;
 }
 
+/*
+ *  Hazard Id : _H1.2_2_sensor_data_
+*/
 bool DataReceiver::GetRowFromCsv(int& aSO2Value)
 {
     if(m_stream->atEnd())
@@ -49,10 +52,27 @@ void DataReceiver::ReadDataPriodically()
         qDebug() << "ERROR: Unable to get row from csv file.";
         return;
     }
+
+    m_dataQueue.enqueue(so2);
     //throw std::invalid_argument("NONE");
     emit dataAvailable(so2);
 }
 
+int DataReceiver::getFromQueue()
+{
+    if(m_dataQueue.empty())
+    {
+        return -1;
+    }
+
+    int so2ppm = m_dataQueue.dequeue();
+    return so2ppm;
+}
+
+/*
+ *  Hazard Id : _H1.1_sensor_config_
+ *              _H1.3_validate_connection_
+*/
 DataReceiver::DataReceiver(QString aCsvPath)
 {
     if(aCsvPath.isNull() || aCsvPath.isEmpty())
@@ -61,16 +81,20 @@ DataReceiver::DataReceiver(QString aCsvPath)
         throw std::invalid_argument("path is not valid");
     }
 
+//    if(!ValidateFileAccess(aCsvPath))
+//    {
+//        qDebug() << "File not accessable";
+//        throw std::invalid_argument("File not accessable");
+//    }
+
     m_csvLocation = aCsvPath;
 }
 
+/*
+ *  Hazard Id : _H1.2_1_sensor_data_
+*/
 bool DataReceiver::start()
 {
-    if(!ValidateFileAccess())
-    {
-        qDebug() << "File not accessable";
-        return false;
-    }
 
     m_file = new QFile(m_csvLocation);
     if(!m_file->open(QIODevice::ReadOnly | QIODevice::Text))

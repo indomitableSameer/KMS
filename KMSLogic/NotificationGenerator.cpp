@@ -5,7 +5,10 @@ NotificationGenerator::NotificationGenerator()
 {
 }
 
-QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int probability)
+/*
+ * Hazard id : _H5.1_append_so2ppm_
+*/
+QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int so2ppm, int probability)
 {
     QString msg;
     msg.clear();
@@ -13,13 +16,13 @@ QString NotificationGenerator::generateAlarmNotification(IAlarmType aAlarm, int 
     {
         QDateTime local(QDateTime::currentDateTime());
         msg = local.date().toString("dd.MM.yyyy") + " " + local.time().toString("hh:mm:ss");
-        msg = msg + " CRITICAL!!! RED Alarm!! Blockage Probabity = " +  QString::number(probability);
+        msg = msg + " CRITICAL!!! RED Alarm!! SO2PPM=" + QString::number(so2ppm)+ " Blockage Probabity= " +  QString::number(probability);
     }
     else if(aAlarm == IAlarmType::YELLOW)
     {
         QDateTime local(QDateTime::currentDateTime());
         msg = local.date().toString("dd.MM.yyyy") + " " + local.time().toString("hh:mm:ss");
-        msg = msg + " ALERT !!! YELLOW Alarm!! Blockage Probabity = " +  QString::number(probability);
+        msg = msg + " ALERT !!! YELLOW Alarm!! SO2PPM=" + QString::number(so2ppm)+ " Blockage Probabity = " +  QString::number(probability);
     }
 
     notificationList.enqueue(msg);

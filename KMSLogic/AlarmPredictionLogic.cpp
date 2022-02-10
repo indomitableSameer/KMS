@@ -7,6 +7,9 @@ AlarmPredictionLogic::AlarmPredictionLogic()
 
 }
 
+/*
+ * Hazard Id : _H4.1_blockage_prediction_
+*/
 int AlarmPredictionLogic::calculateBlockageProbablity(int ppmLevel)
 {
     // probabilty is calcauted with function which is dependent on so2 value
