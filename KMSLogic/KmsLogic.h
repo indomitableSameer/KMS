@@ -32,7 +32,7 @@ signals:
     void processedDataAvailable(IUiData aUiData);
 
 public slots:
-    void processDataReceiver(int so2ppm);
+    void processDataReceiver();
 
 public:
     KMSLogic();

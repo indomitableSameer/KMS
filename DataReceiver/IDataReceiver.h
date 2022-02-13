@@ -7,7 +7,7 @@ class IDataReceiver : public QObject
 {
     Q_OBJECT
 signals:
-    void dataAvailable(int value);
+    void dataAvailable();
 public:
     virtual bool start() = 0;
     virtual int getFromQueue() = 0;

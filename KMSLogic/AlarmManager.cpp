@@ -30,7 +30,11 @@ IAlarmType AlarmManager::HandlerAlarm(int so2ppm)
 
 bool AlarmManager::cancelAlarm()
 {
-    m_alarmLogic->cancelAlarm();
-    m_alarmSoundManager->stopAlarmSound();
-    return true;
+    if(m_alarmLogic->isAlarmActive())
+    {
+        m_alarmLogic->cancelAlarm();
+        m_alarmSoundManager->stopAlarmSound();
+        return true;
+    }
+    return false;
 }

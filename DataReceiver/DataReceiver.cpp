@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <stdexcept>
 
-#define DATA_READ_INTERVAL    60000
+#define DATA_READ_INTERVAL    30000
 
 bool DataReceiver::ValidateFileAccess(QString aFilePath)
 {
@@ -54,8 +54,7 @@ void DataReceiver::ReadDataPriodically()
     }
 
     m_dataQueue.enqueue(so2);
-    //throw std::invalid_argument("NONE");
-    emit dataAvailable(so2);
+    emit dataAvailable();
 }
 
 int DataReceiver::getFromQueue()

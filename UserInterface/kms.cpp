@@ -131,8 +131,9 @@ void kms::on_pushButton_clicked()
 {
     if(ui->lineEdit->text()=="1234"){
         qDebug() << "Alarm Cancelled";
-        IUiData aDate = m_logic->cancelAlarm();
-        ui->listWidget->insertItem(0, aDate.getNotificationMsg());
+        IUiData aData = m_logic->cancelAlarm();
+        if(!aData.getNotificationMsg().isNull() && !aData.getNotificationMsg().isEmpty())
+        ui->listWidget->insertItem(0, aData.getNotificationMsg());
     }
     ui->lineEdit->clear();
 }

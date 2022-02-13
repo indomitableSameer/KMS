@@ -29,49 +29,57 @@ void KMSLogic::initialize()
 */
 void KMSLogic::processor()
 {
-    // TODO - put this into thread and use wait conditions to wakeup thread to process data
-    int so2ppm = m_dataReceiver->getFromQueue();
-    if(so2ppm == -1)
-    {
-        if(dataReceiverFailCounter < 3)
+    try {
+        int so2ppm = m_dataReceiver->getFromQueue();
+        if(so2ppm == -1)
         {
-            dataReceiverFailCounter++;
-            return;
+            if(dataReceiverFailCounter < 3)
+            {
+                dataReceiverFailCounter++;
+                return;
+            }
+            else
+            {
+                IUiData aUiData;
+                QDateTime local(QDateTime::currentDateTime());
+                aUiData.setDate(local);
+                aUiData.setNotification("SYSTEM ERROR !! Unable to receiver sensor values.");
+                emit processedDataAvailable(aUiData);
+            }
         }
-        else
+
+        QString aNotification = "";
+        IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
+        int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
+        m_db_writer->WriteSo2LevelToDB(so2ppm);
+
+        if(aAlarmRaised != IAlarmType::NONE)
         {
-            IUiData aUiData;
-            QDateTime local(QDateTime::currentDateTime());
-            aUiData.setDate(local);
-            aUiData.setSo2Ppm(so2ppm);
-            aUiData.setNotification("SYSTEM ERROR !! Unable to receiver sensor values.");
-            emit processedDataAvailable(aUiData);
+            aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, so2ppm, aBlockageProbablity);
+            m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
+            m_db_writer->WriteNotificationDataToDB(aNotification);
+
+            qDebug() << aNotification;
+            qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
         }
+
+        IUiData aUiData;
+        QDateTime local(QDateTime::currentDateTime());
+        aUiData.setDate(local);
+        aUiData.setSo2Ppm(so2ppm);
+        aUiData.setNotification(aNotification);
+        aUiData.setAlarmType(aAlarmRaised);
+
+        emit processedDataAvailable(aUiData);
     }
+    catch (exception& exp) {
 
-    QString aNotification = "";
-    IAlarmType aAlarmRaised = m_alarmManager->HandlerAlarm(so2ppm);
-    int aBlockageProbablity = m_predictionLogic->calculateBlockageProbablity(so2ppm);
-    m_db_writer->WriteSo2LevelToDB(so2ppm);
-
-    if(aAlarmRaised != IAlarmType::NONE)
-    {
-        aNotification = m_notificationGenerator->generateAlarmNotification(aAlarmRaised, so2ppm, aBlockageProbablity);
-        m_db_writer->WriteAlarmDataToDB(static_cast<int>(aAlarmRaised));
-        m_db_writer->WriteNotificationDataToDB(aNotification);
-
-        qDebug() << aNotification;
-        qDebug() << "Alarm Raised " << (aAlarmRaised==IAlarmType::RED? "RED" : "YELLOW") << "Probabity of Blockage: " << aBlockageProbablity;
+        IUiData aUiData;
+        QDateTime local(QDateTime::currentDateTime());
+        aUiData.setDate(local);
+        aUiData.setNotification(exp.what());
+        emit processedDataAvailable(aUiData);
     }
-
-    IUiData aUiData;
-    QDateTime local(QDateTime::currentDateTime());
-    aUiData.setDate(local);
-    aUiData.setSo2Ppm(so2ppm);
-    aUiData.setNotification(aNotification);
-    aUiData.setAlarmType(aAlarmRaised);
-
-    emit processedDataAvailable(aUiData);
 }
 
 bool KMSLogic::startProcessing()
@@ -85,13 +93,16 @@ IUiData KMSLogic::cancelAlarm()
     QDateTime local(QDateTime::currentDateTime());
 
     IUiData aUiData;
-    aUiData.setNotification(m_notificationGenerator->generateCancelNotification());
-    m_alarmManager->cancelAlarm();
+
+    if(m_alarmManager->cancelAlarm())
+    {
+        aUiData.setNotification(m_notificationGenerator->generateCancelNotification());
+    }
 
     return aUiData;
 }
 
-void KMSLogic::processDataReceiver(int so2ppm)
+void KMSLogic::processDataReceiver()
 {
     processor();
 }
